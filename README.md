@@ -7,7 +7,7 @@ Lala is a command line tool for generating common, pattern-based ignore files.  
 ## Installation
 
 ```
-npm install -g jmfirth/lala
+npm install -g lala
 ```
 
 ## Usage
