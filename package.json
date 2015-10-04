@@ -1,0 +1,40 @@
+{
+  "name": "lala",
+  "version": "1.0.0",
+  "description": "An ignore generator",
+  "main": "app.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jmfirth/lala.git"
+  },
+  "keywords": [
+    "gitignore",
+    "hgignore",
+    "ignore",
+    "git",
+    "hg"
+  ],
+  "author": "Justin Firth",
+  "license": "MIT",
+  "dependencies": {
+    "jsonfile": "^2.2.2",
+    "minimist": "^1.2.0",
+    "needle": "^0.10.0",
+    "promise": "^7.0.4"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.2.1",
+    "gulp-rename": "^1.2.2"
+  },
+  "bin": {
+    "lala": "app.js"
+  },
+  "preferGlobal": true
+}
