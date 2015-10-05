@@ -6,7 +6,7 @@ process.bin = process.title = 'lala';
 var program = require('commander');
 
 program
-	.version('1.2.0')
+	.version('1.2.1')
 	.description('A pattern-based ignore generator.')
 	.command('list', 'list available templates.')
 	.command('ignore <template...>', 'output ignore patterns for one or more templates')
