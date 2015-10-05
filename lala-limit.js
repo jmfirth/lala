@@ -3,14 +3,11 @@
 
 process.bin = process.title = 'lala';
 
-var jsonfile = require('jsonfile');
 var program = require('commander');
 var Lala = require('./lib/lala.js');
 
-var packagejson = jsonfile.readFileSync('./package.json');
-
 program
-	.version(packagejson.version)
+	.version('1.1.1')
 	.alias('lala')
 	.usage('limit [options]')
 	.description('Check your GitHub API rate limit and quota.')
