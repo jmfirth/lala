@@ -2,23 +2,71 @@
 
 import needle from 'needle';
 import Promise from 'promise';
+import storage from 'node-persist';
+import promptly from 'promptly';
+
+let needleGet = Promise.denodeify(needle.get);
+let promptlyPrompt = Promise.denodeify(promptly.prompt);
+let promptlyPassword = Promise.denodeify(promptly.password);
+let promptlyConfim = Promise.denodeify(promptly.confirm);
+
+storage.initSync({
+	dir: '.lala'
+});
 
 export default class Lala {
-	constructor(username, password) {
-		this.config = !!username && !!password ? { username: username, password: password } : null;
+	constructor() {
+		this.auth = {};
+		this.authKey = 'auth';
 		this.rateLimitUrl = 'https://api.github.com/rate_limit';
 		this.contentsUrl = 'https://api.github.com/repos/github/gitignore/contents/';
-		this.get = Promise.denodeify(needle.get);
+		this.load();
+	}
+	config(username, password) {
+		var savedMessage = 'Configuration saved.';
+
+		if (!!username && !!password) {
+			 this.save(username, password);
+			 console.log(savedMessage);
+			 return;
+		}
+
+		var self = this;
+		var temp = {};
+		console.log('Configure GitHub authentication\n');
+		return promptlyPrompt('GitHub username:')
+			.then(function(username) {
+				return (temp.username = username);
+			})
+			.then(function() {
+				return promptlyPassword('GitHub password or API token:')
+			})
+			.then(function(password) {
+				return (temp.password = password);
+			})
+			.then(function() {
+				self.save(temp.username, temp.password);
+				console.log('\n' + savedMessage);
+			});
+	}
+	load() {
+		this.auth = storage.getItemSync(this.authKey)
+	}
+	save(username, password) {
+		storage.setItemSync(this.authKey, {
+			username: username,
+			password: password
+		});
 	}
 	limit() {
-		return this.get(this.rateLimitUrl, this.config)
+		return needleGet(this.rateLimitUrl, this.auth)
 			.then(function(response) {
 				console.log(response.body);
 			});
 	}
 	list() {
 		var self = this;
-		return this.get(this.contentsUrl, this.config)
+		return needleGet(this.contentsUrl, this.auth)
 			.then(function(response) {
 				var data = response.body;
 				var templates = '';
@@ -30,7 +78,7 @@ export default class Lala {
 	}
 	ignore(template) {
 		var self = this;
-		return this.get(this.contentsUrl, this.config)
+		return needleGet(this.contentsUrl, this.auth)
 			.then(function(response) {
 				var data = response.body;
 				for(var index in data) {
@@ -39,36 +87,12 @@ export default class Lala {
 						return current.url;
 				}
 			})
-			.then(function(url) { return self.get(url); })
+			.then(function(url) { return needleGet(url, self.auth); })
 			.then(function(response) { return response.body["download_url"]; })
 			.then(function(url) { return self.get(url); })
 			.then(function(response) { console.log('#\n# Lala - ' + template + ' (' + 'https://' + response.client._host + response.client._httpMessage.path + ')\n#\n\n' + response.body); });
 	}
 	clean(name) {
 		return name.replace(/.gitignore/g, '').toLowerCase();
-	}
-	help() {
-		console.log(`
-lala - Ignore things.
-
-Usage:
-
-list           -  List available ignore templates.
-<template>...  -  Output one or more ignore templates to console.
-help           -  Get help.
-limit           -  Check your rate limit.
-
-Parameters:
-
--u | --username  -  GitHub username
--p | --password  -  GitHub password
-
-Examples:
-
-lala list
-lala node python > .gitignore
-lala java > .hgignore
-lala help
-		`);
 	}
 }

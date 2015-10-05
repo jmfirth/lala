@@ -7,17 +7,15 @@ var program = require('commander');
 var Lala = require('./lib/lala.js');
 
 program
-	.version('1.1.1')
-	.alias('lala')
-	.usage('ignore <template...>')
+	.version('1.2.0')
+	.alias('lala ignore')
+	.usage('<template...>')
 	.description('Output the ignore patterns for one or more templates.  Pipe this output to the file of your choice.')
-	.option('-u, --username', '(optional) GitHub username for authentication')
-	.option('-p, --password', '(optional) GitHub password or API token for authentication')
 	.parse(process.argv);
 
 var templates = program.args;
 
-var lala = new Lala(program.username, program.password);
+var lala = new Lala();
 templates.forEach(function (template) {
 	lala.ignore(template);
 });

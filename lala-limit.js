@@ -7,13 +7,11 @@ var program = require('commander');
 var Lala = require('./lib/lala.js');
 
 program
-	.version('1.1.1')
-	.alias('lala')
-	.usage('limit [options]')
+	.version('1.2.0')
+	.alias('lala limit')
+	.usage('[options]')
 	.description('Check your GitHub API rate limit and quota.')
-	.option('-u, --username', '(optional) GitHub username for authentication')
-	.option('-p, --password', '(optional) GitHub password or API token for authentication')
 	.parse(process.argv);
 
-var lala = new Lala(program.username, program.password);
+var lala = new Lala();
 lala.limit();

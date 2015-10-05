@@ -7,13 +7,11 @@ var program = require('commander');
 var Lala = require('./lib/lala.js');
 
 program
-	.version('1.1.1')
-	.alias('lala')
-	.usage('list [options]')
+	.version('1.2.0')
+	.alias('lala list')
+	.usage('[options]')
 	.description('List known templates (source: github/gitignore repository).')
-	.option('-u, --username', '(optional) GitHub username for authentication')
-	.option('-p, --password', '(optional) GitHub password or API token for authentication')
 	.parse(process.argv);
 
-var lala = new Lala(program.username, program.password);
+var lala = new Lala();
 lala.list();
