@@ -42,7 +42,7 @@ export default class Lala {
 			.then(function(url) { return self.get(url); })
 			.then(function(response) { return response.body["download_url"]; })
 			.then(function(url) { return self.get(url); })
-			.then(function(response) { console.log('#\n# lala - ' + template + '\n#\n\n' + response.body); });
+			.then(function(response) { console.log('#\n# Lala - ' + template + ' (' + 'https://' + response.client._host + response.client._httpMessage.path + ')\n#\n\n' + response.body); });
 	}
 	clean(name) {
 		return name.replace(/.gitignore/g, '').toLowerCase();
