@@ -6,76 +6,76 @@ Lala is a command line tool for generating common, pattern-based ignore files.  
 
 ## Installation
 
+Lala is meant to be installed as a global module, putting `lala` on your `PATH`:
+
 ```
-npm install -g lala
-```
-
-## Usage
-
-### Listing Ignore Templates
-
-To get a list of available ignore templates:
-
-```sh
-# Lists available ignore templates
-lala list
+$ npm install -g lala
 ```
 
-### Using Ignore Templates
+## Configuration
 
-Lala can output both individual and combinations of ignore templates.  Lala outputs them as console messages which can be piped into another file for use.
+Lala uses the [GitHub API](https://developer.github.com/v3/) to pull down the latest templates from the [github/gitignore](https://github.com/github/gitignore) repository.  The [GitHub API](https://developer.github.com/v3/) allows up to 60 requests per hour, unauthenticated, for a given IP address.  In all but the most extreme usage scenarios you would have a difficult time exceeding that rate limit with Lala alone.
 
-Command line pattern:
-
-```sh
-lala  ignore <template...>
-```
-
-As a real-world example, let's build an ignore file for a [Git](https://git-scm.com) repository containing a [Visual Studio](https://www.visualstudio.com) solution with [ASP.NET](http://www.asp.net/)/C# projects that leverage [node](https://nodejs.org)/[npm](https://www.npmjs.com) tooling:
-
-```sh
-# Create a .gitignore file containing ignore patterns for Visual Studio and node projects
-lala ignore visualstudio node > .gitignore
-
-# Another way
-lala ignore visualstudio >> .gitignore
-lala ignore node >> .gitignore
-
-# Using Mercurial instead
-lala visualstudio node > .hgignore
-```
-
-## GitHub API Authentication
-
-GitHub allows up to 60 requests per hour, unauthenticated, for a given IP address.  In all but the most extreme usage scenarios you would have a difficult time exceeding that rate limit with Lala alone.
-
-### Seeing Your Rate Limit
+### View Current Rate Limit
 
 To see your rate limit for the current configuration of Lala:
 
 ```sh
 # Check your rate limit
-lala limit
+$ lala limit
 ```
 
-### Authenticating With GitHub API
+### Configure GitHub API authorization
 
-If the rate limit is not enough, or you just want to authenticate anyways, the following optional command line parameters are available:
-
-```
--u --username  (optional) GitHub username for authentication
--p --password  (optional) GitHub password or API token for authentication
-```
-
-### Using Authentication
+In the event that you need to increase your rate limit beyond what is provided anonymously, you can set your GitHub username and password or API token:
 
 ```sh
-# Check your authenticated limit
-lala -u <user> -p <pass_or_token> limit
+# Run the Lala configuration wizard
+$ lala config
 
-# Look at the template list
-lala -u <user> -p <pass_or_token> list
+# Or, bypass the configuration wizard and send the values by command line parameters
+$ lala config -u <GitHub_username> -p <GitHub_password_or_token>
+```
 
-# Create a .gitignore file containing ignore patterns for Visual Studio and node projects
-lala -u <user> -p <pass_or_token> ignore visualstudio node > .gitignore
+## Usage
+
+### List Ignore Templates
+
+To get a list of available ignore templates:
+
+```sh
+# Lists available ignore templates
+$ lala list
+```
+
+### Output Ignore Templates
+
+Lala can output both individual and combinations of ignore templates.  Lala outputs them as console messages which can be piped into another file for use.
+
+Command line pattern:
+
+```
+lala ignore <template...>
+```
+
+As a real-world example, let's build an ignore file for a [Git](https://git-scm.com) repository containing a [Visual Studio](https://www.visualstudio.com) solution with [ASP.NET](http://www.asp.net/)/C# projects that leverage [node](https://nodejs.org)/[npm](https://www.npmjs.com) tooling:
+
+```sh
+# Create a file containing the ignore pattern templates for a Git repository
+$ lala ignore visualstudio node > .gitignore
+
+# Or, create the file by individually appending each ignore pattern template
+$ lala ignore visualstudio >> .gitignore
+$ lala ignore node >> .gitignore
+
+# For a Mercurial repository instead
+$ lala visualstudio node > .hgignore
+```
+
+## Help
+
+For command line help:
+
+```
+$ lala help
 ```
