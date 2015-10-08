@@ -7,7 +7,7 @@ var program = require('commander');
 var Lala = require('./lib/lala.js');
 
 program
-	.version('1.2.1')
+	.version('1.2.2')
 	.alias('lala list')
 	.usage('[options]')
 	.description('List known templates (source: github/gitignore repository).')

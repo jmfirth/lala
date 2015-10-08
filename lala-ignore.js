@@ -7,7 +7,7 @@ var program = require('commander');
 var Lala = require('./lib/lala.js');
 
 program
-	.version('1.2.1')
+	.version('1.2.2')
 	.alias('lala ignore')
 	.usage('<template...>')
 	.description('Output the ignore patterns for one or more templates.  Pipe this output to the file of your choice.')

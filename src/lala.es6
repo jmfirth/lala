@@ -89,7 +89,7 @@ export default class Lala {
 			})
 			.then(function(url) { return needleGet(url, self.auth); })
 			.then(function(response) { return response.body["download_url"]; })
-			.then(function(url) { return self.get(url); })
+			.then(function(url) { return needleGet(url); })
 			.then(function(response) { console.log('#\n# Lala - ' + template + ' (' + 'https://' + response.client._host + response.client._httpMessage.path + ')\n#\n\n' + response.body); });
 	}
 	clean(name) {
